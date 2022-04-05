@@ -22,7 +22,7 @@ class ClifLexer():
 	reserved_element = {
 		'iff': 'IFF',
 		'if': 'IF',
-		'cl:comment' : 'CL_COMMENT'
+		'cl:comment' : 'CL_COMMENT',
 	}
 
 	tokens = ['OPEN', 'CLOSE', 'QUOTEDSTRING', 'RESERVEDELEMENT', 'NUMERAL']
@@ -49,7 +49,7 @@ class ClifLexer():
 		# here we use a regular expression to say what matches this particular token:
 		# any sequence of standard characters of length 1 or greater
 		# but this does not yet cover all reservedelements
-		r'[A-Za-z]+'
+		r'[A-Za-z]+ ([A-Za-z]|:)*'
 		if t.value in self.reserved_bool:
 			t.type = self.reserved_bool[t.value]
 			#print("Boolean reserved word: " + t.value)
@@ -61,7 +61,7 @@ class ClifLexer():
 			pass
 
 	def t_QUOTEDSTRING(self, t):
-		r'\'[\w* | \?* | \$* | /* | "* | =* | ;* | \+* | :* | %* | \[* | \]* ]*\''
+		r'\'(\w*|\?*|\$*|/*|"*|=*|;*|\+*|:*|%*|\[*|\]*|,*)*\''
 		return t
 	
 	def t_NUMERAL(self, t):
@@ -100,8 +100,8 @@ lex.lex(s)
 
 s = "('FuncA' 'a' 100 25) \
 (and (('B' 'C') (or ('C' 'D'))) (or ('FuncB') ('Func' 100 'A') ('something')))\
-('cl:comment' 'B100%')\
-('cl:comment' 'COMMENT:B100%')\
+('cl:comment' 'B100%') \n\
+(cl:comment 'COMMENT:B100%')\
 (iff (and ('B_100' 'B_101' '$100')) ('[TODAY]' '[4,5,6]' '[3+4]')) "
 print('\nLexing '+s)
 lex.lex(s)
