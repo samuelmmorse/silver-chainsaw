@@ -61,8 +61,7 @@ class ClifLexer():
 			pass
 
 	def t_QUOTEDSTRING(self, t):
-		# This is not yet correct: you need to complete the lexing of quotedstring
-		r'\'[\w]*[\?*|\$*]*\''
+		r'\'[\w* | \?* | \$* | /* | "* | =* | ;* | \+* | :* | %* | \[* | \]* ]*\''
 		return t
 	
 	def t_NUMERAL(self, t):
@@ -87,7 +86,22 @@ s = "(and ('B' 'C') (or ('C' 'D'))))"
 print('\nLexing '+s)
 lex.lex(s)
 
-# the following is currently not working but should be accepted because ? is in the set char
 s = "('who' ('is' '?') )"
+print('\nLexing '+s)
+lex.lex(s)
+
+s = "(or (not ('TODAY=03/26/22')) \
+(not ('TODAY=03/26/22')) (and 'FIRDAY' 13)) \
+(and (0))(and (0 1 2 3 4 'more;'))(if (not 'True') \
+(and (0 '=' 1) (0 '=' 2) (not 'FalseStatement3'))) \
+(100 ('and' (1000) (1001) ('1001+')))"
+print('\nLexing '+s)
+lex.lex(s)
+
+s = "('FuncA' 'a' 100 25) \
+(and (('B' 'C') (or ('C' 'D'))) (or ('FuncB') ('Func' 100 'A') ('something')))\
+('cl:comment' 'B100%')\
+('cl:comment' 'COMMENT:B100%')\
+(iff (and ('B_100' 'B_101' '$100')) ('[TODAY]' '[4,5,6]' '[3+4]')) "
 print('\nLexing '+s)
 lex.lex(s)
