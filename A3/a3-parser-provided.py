@@ -87,6 +87,10 @@ class ClifParser(object):
 		print('Parser constructor called.')
 		self.lexer = ClifLexer()
 		self.parser = yacc.yacc(module=self)
+		self.count = 0
+		self.atomic = False
+		self.boolean = False
+		self.input_string = ''
 
 	# DESTRUCTOR
 	def __del__(self):
@@ -104,20 +108,22 @@ class ClifParser(object):
 		interpretedname : NUMERAL 
 				| QUOTEDSTRING
 		"""
+		print("interpretedname")
 
 	def p_sentence(self, p):
 		"""
 		sentence : atomsent
 				| boolsent
 		"""
+		print("sentence")
 		# note that the rule above is INCORRECT: it is just an example of how to specify a rule
-		print("Found a sentence: {} {} {} ".format(p[2], p[3], p[4]))
-		if p[3] == p[4]:
-			no_quotedstrings = 1
-		else:
-			no_quotedstrings = 2
+		# print("Found a sentence: {} {} {} ".format(p[2], p[3], p[4]))
+		# if p[3] == p[4]:
+		# 	no_quotedstrings = 1
+		# else:
+		# 	no_quotedstrings = 2
 
-		print("Number of distinct quoted strings: " + str(no_quotedstrings))
+		# print("Number of distinct quoted strings: " + str(no_quotedstrings))
 
 	def p_sentences(self, p):
 		"""
@@ -125,16 +131,19 @@ class ClifParser(object):
 				| sentence sentences
 				| empty
 		"""
+		print("sentences")
 
 	def p_empty(self, p):
 		"""
 		empty : 
 		"""
+		print("empty")
 
 	def p_predicate(self, p):
 		"""
 		predicate : interpretedname
 		"""
+		print("predicate")
 
 	def p_termseq(self, p):
 		# """
@@ -145,31 +154,40 @@ class ClifParser(object):
 				| interpretedname termseq
 				| empty
 		'''
+		print("termseq")
 
 	def p_atomsent(self, p):
 		"""
 		atomsent : OPEN predicate termseq CLOSE
 				| empty
 		"""
+		self.boolean = False
+		self.atomic = True
+		print("atomsent")
 
 	def p_boolsent(self, p):
 		"""
-		boolsent : OPEN andOr sentences CLOSE 
-				| OPEN ifIff sentence sentence CLOSE 
+		boolsent : OPEN AND sentences CLOSE
+				| OPEN OR sentences CLOSE 
+				| OPEN IF sentence sentence CLOSE 
+				| OPEN IFF sentence sentence CLOSE 
 				| OPEN NOT sentence CLOSE 
 		"""
+		self.atomic = False
+		self.boolean = True
+		print("boolsent")
 
-	def p_andOr(self, p):
-		"""
-		andOr : AND 
-				| OR
-		"""
+	# def p_andOr(self, p):
+	# 	"""
+	# 	andOr : AND 
+	# 			| OR
+	# 	"""
 
-	def p_ifIff(self, p):
-		"""
-		ifIff : IF
-				| IFF
-		"""
+	# def p_ifIff(self, p):
+	# 	"""
+	# 	ifIff : IF
+	# 			| IFF
+	# 	"""
 	
 	def p_error(self, p):
 
@@ -188,8 +206,15 @@ class ClifParser(object):
 	def parse(self, input_string):
 		# initialize the parser
 		parser = yacc.yacc(module=self)
-
+		self.input_string = input_string
 		self.parser.parse(input_string)
+	
+	def parsePrint(self):
+		if self.atomic:
+			print("Atomic:", self.input_string)
+		elif self.boolean:
+			print("Boolean:", self.input_string)
+
 
 # using only the lexer
 lexer = ClifLexer()
@@ -198,25 +223,28 @@ print('\nLexing '+s)
 lexer.lex(s)
 
 parser = ClifParser()
-s = "(and 'Func')"
+s = "(and ('Func'))"
 #s = "(and ('max' 1 2 15) (or  ('Func' 'D')))"
 print('\nLexing '+s)
 parser.lexer.lex(s)
 print('\nParsing '+s)
 parser.parse(s)
+parser.parsePrint()
 
 parser = ClifParser()
-s = "(or 'Func')"
+s = "(or ('Func'))"
 #s = "(and ('max' 1 2 15) (or  ('Func' 'D')))"
 print('\nLexing '+s)
 parser.lexer.lex(s)
 print('\nParsing '+s)
 parser.parse(s)
+parser.parsePrint()
 
 # the following is currently not working but should be accepted because ? is in the set char
 parser = ClifParser()
-s = "('who' ('is' '?') )"
+s = "('who' 'is' '?')"
 print('\nLexing '+s)
 parser.lexer.lex(s)
 print('\nParsing '+s)
 parser.parse(s)
+parser.parsePrint()
