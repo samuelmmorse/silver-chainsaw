@@ -94,8 +94,7 @@ class ClifParser(object):
 
 	def p_starter(self, p):
 		"""
-		starter : sentence 
-				| sentence starter
+		starter : sentences
 		"""
 		print("Starting the parsing process.")
 		pass
@@ -120,6 +119,18 @@ class ClifParser(object):
 
 		print("Number of distinct quoted strings: " + str(no_quotedstrings))
 
+	def p_sentences(self, p):
+		"""
+		sentences : sentence 
+				| sentence sentences
+				| empty
+		"""
+
+	def p_empty(self, p):
+		"""
+		empty : 
+		"""
+
 	def p_predicate(self, p):
 		"""
 		predicate : interpretedname
@@ -132,16 +143,18 @@ class ClifParser(object):
 		'''
 		termseq : interpretedname
 				| interpretedname termseq
+				| empty
 		'''
 
 	def p_atomsent(self, p):
 		"""
 		atomsent : OPEN predicate termseq CLOSE
+				| empty
 		"""
 
 	def p_boolsent(self, p):
 		"""
-		boolsent : OPEN andOr starter CLOSE 
+		boolsent : OPEN andOr sentences CLOSE 
 				| OPEN ifIff sentence sentence CLOSE 
 				| OPEN NOT sentence CLOSE 
 		"""

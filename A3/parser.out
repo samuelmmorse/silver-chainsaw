@@ -1,1 +1,111 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    CL_COMMENT
+    RESERVEDELEMENT
+
+Grammar
+
+Rule 0     S' -> starter
+Rule 1     starter -> sentences
+Rule 2     starter -> starter sentences
+Rule 3     interpretedname -> NUMERAL
+Rule 4     interpretedname -> QUOTEDSTRING
+Rule 5     sentence -> atomsent
+Rule 6     sentence -> boolsent
+Rule 7     sentences -> sentence
+Rule 8     sentences -> sentence sentences
+Rule 9     sentences -> empty
+Rule 10    empty -> <empty>
+Rule 11    predicate -> interpretedname
+Rule 12    termseq -> interpretedname
+Rule 13    termseq -> interpretedname termseq
+Rule 14    termseq -> empty
+Rule 15    atomsent -> OPEN predicate termseq CLOSE
+Rule 16    atomsent -> empty
+Rule 17    boolsent -> OPEN andOr sentences CLOSE
+Rule 18    boolsent -> OPEN ifIff sentence sentence CLOSE
+Rule 19    boolsent -> OPEN NOT sentence CLOSE
+Rule 20    andOr -> AND
+Rule 21    andOr -> OR
+Rule 22    ifIff -> IF
+Rule 23    ifIff -> IFF
+
+Terminals, with rules where they appear
+
+AND                  : 20
+CLOSE                : 15 17 18 19
+CL_COMMENT           : 
+IF                   : 22
+IFF                  : 23
+NOT                  : 19
+NUMERAL              : 3
+OPEN                 : 15 17 18 19
+OR                   : 21
+QUOTEDSTRING         : 4
+RESERVEDELEMENT      : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+andOr                : 17
+atomsent             : 5
+boolsent             : 6
+empty                : 9 14 16
+ifIff                : 18
+interpretedname      : 11 12 13
+predicate            : 15
+sentence             : 7 8 18 18 19
+sentences            : 1 2 8 17
+starter              : 2 0
+termseq              : 13 15
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . starter
+    (1) starter -> . sentences
+    (2) starter -> . starter sentences
+    (7) sentences -> . sentence
+    (8) sentences -> . sentence sentences
+    (9) sentences -> . empty
+    (5) sentence -> . atomsent
+    (6) sentence -> . boolsent
+    (10) empty -> .
+    (15) atomsent -> . OPEN predicate termseq CLOSE
+    (16) atomsent -> . empty
+    (17) boolsent -> . OPEN andOr sentences CLOSE
+    (18) boolsent -> . OPEN ifIff sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
+
+  ! shift/reduce conflict for OPEN resolved as shift
+    $end            reduce using rule 10 (empty -> .)
+    OPEN            shift and go to state 7
+
+  ! OPEN            [ reduce using rule 10 (empty -> .) ]
+
+    starter                        shift and go to state 1
+    sentences                      shift and go to state 2
+    sentence                       shift and go to state 3
+    empty                          shift and go to state 4
+    atomsent                       shift and go to state 5
+    boolsent                       shift and go to state 6
+
+state 1
+
+    (0) S' -> starter .
+    (2) starter -> starter . sentences
+    (7) sentences -> . sentence
+    (8) sentences -> . sentence sentences
+    (9) sentences -> . empty
+    (5) sentence -> . atomsent
+    (6) sentence -> . boolsent
+    (10) empty -> .
+    (15) atomsent -> . OPEN predicate termseq CLOSE
+    (16) atomsent -> . empty
+    (17) boolsent -> . OPEN andOr sentences CLOSE
+    (18) boolsent -> . OPEN ifIff sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
+
