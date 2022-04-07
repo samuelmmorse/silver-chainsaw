@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND CLOSE OPEN OR QUOTEDSTRING RESERVEDELEMENT\n\t\tstarter : sentence\n\t\t\t\t| sentence starter\n\t\t\n\t\tsentence : OPEN AND QUOTEDSTRING QUOTEDSTRING CLOSE\n\t\t'
+_lr_signature = 'AND CLOSE CL_COMMENT IF IFF NOT NUMERAL OPEN OR QUOTEDSTRING RESERVEDELEMENT\n\t\tstarter : sentences\n\t\t\n\t\tinterpretedname : NUMERAL \n\t\t\t\t| QUOTEDSTRING\n\t\t\n\t\tsentence : atomsent\n\t\t\t\t| boolsent\n\t\t\n\t\tsentences : sentence \n\t\t\t\t| sentence sentences\n\t\t\t\t| empty\n\t\t\n\t\tempty : \n\t\t\n\t\tpredicate : interpretedname\n\t\t\n\t\ttermseq : interpretedname\n\t\t\t\t| interpretedname termseq\n\t\t\t\t| empty\n\t\t\n\t\tatomsent : OPEN predicate termseq CLOSE\n\t\t\n\t\tboolsent : OPEN AND sentences CLOSE\n\t\t\t\t| OPEN OR sentences CLOSE \n\t\t\t\t| OPEN IF sentence sentence CLOSE \n\t\t\t\t| OPEN IFF sentence sentence CLOSE \n\t\t\t\t| OPEN NOT sentence CLOSE \n\t\t'
     
-_lr_action_items = {'OPEN':([0,2,8,],[3,3,-3,]),'$end':([1,2,4,8,],[0,-1,-2,-3,]),'AND':([3,],[5,]),'QUOTEDSTRING':([5,6,],[6,7,]),'CLOSE':([7,],[8,]),}
+_lr_action_items = {'$end':([0,1,2,3,4,5,6,8,26,28,29,32,33,34,],[-9,0,-1,-6,-8,-4,-5,-7,-14,-15,-16,-19,-17,-18,]),'OPEN':([0,3,5,6,10,11,12,13,14,23,24,26,28,29,32,33,34,],[7,7,-4,-5,7,7,7,7,7,7,7,-14,-15,-16,-19,-17,-18,]),'CLOSE':([3,4,5,6,8,9,10,11,15,16,17,18,19,20,21,22,25,26,27,28,29,30,31,32,33,34,],[-6,-8,-4,-5,-7,-9,-9,-9,-10,-2,-3,26,-9,-13,28,29,32,-14,-12,-15,-16,33,34,-19,-17,-18,]),'AND':([7,],[10,]),'OR':([7,],[11,]),'IF':([7,],[12,]),'IFF':([7,],[13,]),'NOT':([7,],[14,]),'NUMERAL':([7,9,15,16,17,19,],[16,16,-10,-2,-3,16,]),'QUOTEDSTRING':([7,9,15,16,17,19,],[17,17,-10,-2,-3,17,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'starter':([0,2,],[1,4,]),'sentence':([0,2,],[2,2,]),}
+_lr_goto_items = {'starter':([0,],[1,]),'sentences':([0,3,10,11,],[2,8,21,22,]),'sentence':([0,3,10,11,12,13,14,23,24,],[3,3,3,3,23,24,25,30,31,]),'empty':([0,3,9,10,11,19,],[4,4,20,4,4,20,]),'atomsent':([0,3,10,11,12,13,14,23,24,],[5,5,5,5,5,5,5,5,5,]),'boolsent':([0,3,10,11,12,13,14,23,24,],[6,6,6,6,6,6,6,6,6,]),'predicate':([7,],[9,]),'interpretedname':([7,9,19,],[15,19,19,]),'termseq':([9,19,],[18,27,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,7 +27,23 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> starter","S'",1,None,None,None),
-  ('starter -> sentence','starter',1,'p_starter','a3-parser-provided.py',81),
-  ('starter -> sentence starter','starter',2,'p_starter','a3-parser-provided.py',82),
-  ('sentence -> OPEN AND QUOTEDSTRING QUOTEDSTRING CLOSE','sentence',5,'p_sentence','a3-parser-provided.py',89),
+  ('starter -> sentences','starter',1,'p_starter','lexer_parser.py',102),
+  ('interpretedname -> NUMERAL','interpretedname',1,'p_interpretedname','lexer_parser.py',109),
+  ('interpretedname -> QUOTEDSTRING','interpretedname',1,'p_interpretedname','lexer_parser.py',110),
+  ('sentence -> atomsent','sentence',1,'p_sentence','lexer_parser.py',116),
+  ('sentence -> boolsent','sentence',1,'p_sentence','lexer_parser.py',117),
+  ('sentences -> sentence','sentences',1,'p_sentences','lexer_parser.py',131),
+  ('sentences -> sentence sentences','sentences',2,'p_sentences','lexer_parser.py',132),
+  ('sentences -> empty','sentences',1,'p_sentences','lexer_parser.py',133),
+  ('empty -> <empty>','empty',0,'p_empty','lexer_parser.py',139),
+  ('predicate -> interpretedname','predicate',1,'p_predicate','lexer_parser.py',145),
+  ('termseq -> interpretedname','termseq',1,'p_termseq','lexer_parser.py',151),
+  ('termseq -> interpretedname termseq','termseq',2,'p_termseq','lexer_parser.py',152),
+  ('termseq -> empty','termseq',1,'p_termseq','lexer_parser.py',153),
+  ('atomsent -> OPEN predicate termseq CLOSE','atomsent',4,'p_atomsent','lexer_parser.py',162),
+  ('boolsent -> OPEN AND sentences CLOSE','boolsent',4,'p_boolsent','lexer_parser.py',170),
+  ('boolsent -> OPEN OR sentences CLOSE','boolsent',4,'p_boolsent','lexer_parser.py',171),
+  ('boolsent -> OPEN IF sentence sentence CLOSE','boolsent',5,'p_boolsent','lexer_parser.py',172),
+  ('boolsent -> OPEN IFF sentence sentence CLOSE','boolsent',5,'p_boolsent','lexer_parser.py',173),
+  ('boolsent -> OPEN NOT sentence CLOSE','boolsent',4,'p_boolsent','lexer_parser.py',174),
 ]

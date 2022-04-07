@@ -1,5 +1,6 @@
 import ply.lex as lex
 import ply.yacc as yacc
+import sys
 
 class ClifLexer():
 
@@ -108,14 +109,14 @@ class ClifParser(object):
 		interpretedname : NUMERAL 
 				| QUOTEDSTRING
 		"""
-		print("interpretedname")
+		#print("interpretedname")
 
 	def p_sentence(self, p):
 		"""
 		sentence : atomsent
 				| boolsent
 		"""
-		print("sentence")
+		#print("sentence")
 		# note that the rule above is INCORRECT: it is just an example of how to specify a rule
 		# print("Found a sentence: {} {} {} ".format(p[2], p[3], p[4]))
 		# if p[3] == p[4]:
@@ -131,19 +132,19 @@ class ClifParser(object):
 				| sentence sentences
 				| empty
 		"""
-		print("sentences")
+		#print("sentences")
 
 	def p_empty(self, p):
 		"""
 		empty : 
 		"""
-		print("empty")
+		#print("empty")
 
 	def p_predicate(self, p):
 		"""
 		predicate : interpretedname
 		"""
-		print("predicate")
+		#print("predicate")
 
 	def p_termseq(self, p):
 		# """
@@ -154,16 +155,15 @@ class ClifParser(object):
 				| interpretedname termseq
 				| empty
 		'''
-		print("termseq")
+		#print("termseq")
 
 	def p_atomsent(self, p):
 		"""
 		atomsent : OPEN predicate termseq CLOSE
-				| empty
 		"""
 		self.boolean = False
 		self.atomic = True
-		print("atomsent")
+		#print("atomsent")
 
 	def p_boolsent(self, p):
 		"""
@@ -175,20 +175,9 @@ class ClifParser(object):
 		"""
 		self.atomic = False
 		self.boolean = True
-		print("boolsent")
+		#print("boolsent")
 
-	# def p_andOr(self, p):
-	# 	"""
-	# 	andOr : AND 
-	# 			| OR
-	# 	"""
 
-	# def p_ifIff(self, p):
-	# 	"""
-	# 	ifIff : IF
-	# 			| IFF
-	# 	"""
-	
 	def p_error(self, p):
 
 		if p is None:
@@ -216,35 +205,20 @@ class ClifParser(object):
 			print("Boolean:", self.input_string)
 
 
-# using only the lexer
-lexer = ClifLexer()
-s = "(and ('B' 'C') (or ('C' 'D'))))"
-print('\nLexing '+s)
-lexer.lex(s)
+def __main__():
 
-parser = ClifParser()
-s = "(and ('Func'))"
-#s = "(and ('max' 1 2 15) (or  ('Func' 'D')))"
-print('\nLexing '+s)
-parser.lexer.lex(s)
-print('\nParsing '+s)
-parser.parse(s)
-parser.parsePrint()
+    filename = sys.argv[1]
+    print(sys.argv[1])
+    sentences = []
+    with open(filename, 'r') as inputfile:
+        for line in inputfile:
+            sentences.append(line)
+        
+    print("Number of sentences:", int(len(sentences)))
 
-parser = ClifParser()
-s = "(or ('Func'))"
-#s = "(and ('max' 1 2 15) (or  ('Func' 'D')))"
-print('\nLexing '+s)
-parser.lexer.lex(s)
-print('\nParsing '+s)
-parser.parse(s)
-parser.parsePrint()
+    for sentence in sentences:
+        parser = ClifParser()
+        parser.parse(sentence)
+        parser.parsePrint()
 
-# the following is currently not working but should be accepted because ? is in the set char
-parser = ClifParser()
-s = "('who' 'is' '?')"
-print('\nLexing '+s)
-parser.lexer.lex(s)
-print('\nParsing '+s)
-parser.parse(s)
-parser.parsePrint()
+__main__()
