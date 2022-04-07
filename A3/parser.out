@@ -22,24 +22,23 @@ Rule 11    termseq -> interpretedname
 Rule 12    termseq -> interpretedname termseq
 Rule 13    termseq -> empty
 Rule 14    atomsent -> OPEN predicate termseq CLOSE
-Rule 15    atomsent -> empty
-Rule 16    boolsent -> OPEN AND sentences CLOSE
-Rule 17    boolsent -> OPEN OR sentences CLOSE
-Rule 18    boolsent -> OPEN IF sentence sentence CLOSE
-Rule 19    boolsent -> OPEN IFF sentence sentence CLOSE
-Rule 20    boolsent -> OPEN NOT sentence CLOSE
+Rule 15    boolsent -> OPEN AND sentences CLOSE
+Rule 16    boolsent -> OPEN OR sentences CLOSE
+Rule 17    boolsent -> OPEN IF sentence sentence CLOSE
+Rule 18    boolsent -> OPEN IFF sentence sentence CLOSE
+Rule 19    boolsent -> OPEN NOT sentence CLOSE
 
 Terminals, with rules where they appear
 
-AND                  : 16
-CLOSE                : 14 16 17 18 19 20
+AND                  : 15
+CLOSE                : 14 15 16 17 18 19
 CL_COMMENT           : 
-IF                   : 18
-IFF                  : 19
-NOT                  : 20
+IF                   : 17
+IFF                  : 18
+NOT                  : 19
 NUMERAL              : 2
-OPEN                 : 14 16 17 18 19 20
-OR                   : 17
+OPEN                 : 14 15 16 17 18 19
+OR                   : 16
 QUOTEDSTRING         : 3
 RESERVEDELEMENT      : 
 error                : 
@@ -48,11 +47,11 @@ Nonterminals, with rules where they appear
 
 atomsent             : 4
 boolsent             : 5
-empty                : 8 13 15
+empty                : 8 13
 interpretedname      : 10 11 12
 predicate            : 14
-sentence             : 6 7 18 18 19 19 20
-sentences            : 1 7 16 17
+sentence             : 6 7 17 17 18 18 19
+sentences            : 1 7 15 16
 starter              : 0
 termseq              : 12 14
 
@@ -69,18 +68,14 @@ state 0
     (5) sentence -> . boolsent
     (9) empty -> .
     (14) atomsent -> . OPEN predicate termseq CLOSE
-    (15) atomsent -> . empty
-    (16) boolsent -> . OPEN AND sentences CLOSE
-    (17) boolsent -> . OPEN OR sentences CLOSE
-    (18) boolsent -> . OPEN IF sentence sentence CLOSE
-    (19) boolsent -> . OPEN IFF sentence sentence CLOSE
-    (20) boolsent -> . OPEN NOT sentence CLOSE
+    (15) boolsent -> . OPEN AND sentences CLOSE
+    (16) boolsent -> . OPEN OR sentences CLOSE
+    (17) boolsent -> . OPEN IF sentence sentence CLOSE
+    (18) boolsent -> . OPEN IFF sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
 
-  ! shift/reduce conflict for OPEN resolved as shift
     $end            reduce using rule 9 (empty -> .)
     OPEN            shift and go to state 7
-
-  ! OPEN            [ reduce using rule 9 (empty -> .) ]
 
     starter                        shift and go to state 1
     sentences                      shift and go to state 2
@@ -113,23 +108,20 @@ state 3
     (5) sentence -> . boolsent
     (9) empty -> .
     (14) atomsent -> . OPEN predicate termseq CLOSE
-    (15) atomsent -> . empty
-    (16) boolsent -> . OPEN AND sentences CLOSE
-    (17) boolsent -> . OPEN OR sentences CLOSE
-    (18) boolsent -> . OPEN IF sentence sentence CLOSE
-    (19) boolsent -> . OPEN IFF sentence sentence CLOSE
-    (20) boolsent -> . OPEN NOT sentence CLOSE
+    (15) boolsent -> . OPEN AND sentences CLOSE
+    (16) boolsent -> . OPEN OR sentences CLOSE
+    (17) boolsent -> . OPEN IF sentence sentence CLOSE
+    (18) boolsent -> . OPEN IFF sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
 
   ! reduce/reduce conflict for $end resolved using rule 6 (sentences -> sentence .)
   ! reduce/reduce conflict for CLOSE resolved using rule 6 (sentences -> sentence .)
-  ! shift/reduce conflict for OPEN resolved as shift
     $end            reduce using rule 6 (sentences -> sentence .)
     CLOSE           reduce using rule 6 (sentences -> sentence .)
     OPEN            shift and go to state 7
 
   ! $end            [ reduce using rule 9 (empty -> .) ]
   ! CLOSE           [ reduce using rule 9 (empty -> .) ]
-  ! OPEN            [ reduce using rule 9 (empty -> .) ]
 
     sentence                       shift and go to state 3
     sentences                      shift and go to state 8
@@ -140,16 +132,9 @@ state 3
 state 4
 
     (8) sentences -> empty .
-    (15) atomsent -> empty .
 
-  ! reduce/reduce conflict for $end resolved using rule 8 (sentences -> empty .)
-  ! reduce/reduce conflict for CLOSE resolved using rule 8 (sentences -> empty .)
     $end            reduce using rule 8 (sentences -> empty .)
     CLOSE           reduce using rule 8 (sentences -> empty .)
-    OPEN            reduce using rule 15 (atomsent -> empty .)
-
-  ! $end            [ reduce using rule 15 (atomsent -> empty .) ]
-  ! CLOSE           [ reduce using rule 15 (atomsent -> empty .) ]
 
 
 state 5
@@ -173,11 +158,11 @@ state 6
 state 7
 
     (14) atomsent -> OPEN . predicate termseq CLOSE
-    (16) boolsent -> OPEN . AND sentences CLOSE
-    (17) boolsent -> OPEN . OR sentences CLOSE
-    (18) boolsent -> OPEN . IF sentence sentence CLOSE
-    (19) boolsent -> OPEN . IFF sentence sentence CLOSE
-    (20) boolsent -> OPEN . NOT sentence CLOSE
+    (15) boolsent -> OPEN . AND sentences CLOSE
+    (16) boolsent -> OPEN . OR sentences CLOSE
+    (17) boolsent -> OPEN . IF sentence sentence CLOSE
+    (18) boolsent -> OPEN . IFF sentence sentence CLOSE
+    (19) boolsent -> OPEN . NOT sentence CLOSE
     (10) predicate -> . interpretedname
     (2) interpretedname -> . NUMERAL
     (3) interpretedname -> . QUOTEDSTRING
@@ -221,7 +206,7 @@ state 9
 
 state 10
 
-    (16) boolsent -> OPEN AND . sentences CLOSE
+    (15) boolsent -> OPEN AND . sentences CLOSE
     (6) sentences -> . sentence
     (7) sentences -> . sentence sentences
     (8) sentences -> . empty
@@ -229,18 +214,14 @@ state 10
     (5) sentence -> . boolsent
     (9) empty -> .
     (14) atomsent -> . OPEN predicate termseq CLOSE
-    (15) atomsent -> . empty
-    (16) boolsent -> . OPEN AND sentences CLOSE
-    (17) boolsent -> . OPEN OR sentences CLOSE
-    (18) boolsent -> . OPEN IF sentence sentence CLOSE
-    (19) boolsent -> . OPEN IFF sentence sentence CLOSE
-    (20) boolsent -> . OPEN NOT sentence CLOSE
+    (15) boolsent -> . OPEN AND sentences CLOSE
+    (16) boolsent -> . OPEN OR sentences CLOSE
+    (17) boolsent -> . OPEN IF sentence sentence CLOSE
+    (18) boolsent -> . OPEN IFF sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
 
-  ! shift/reduce conflict for OPEN resolved as shift
     CLOSE           reduce using rule 9 (empty -> .)
     OPEN            shift and go to state 7
-
-  ! OPEN            [ reduce using rule 9 (empty -> .) ]
 
     sentences                      shift and go to state 21
     sentence                       shift and go to state 3
@@ -250,7 +231,7 @@ state 10
 
 state 11
 
-    (17) boolsent -> OPEN OR . sentences CLOSE
+    (16) boolsent -> OPEN OR . sentences CLOSE
     (6) sentences -> . sentence
     (7) sentences -> . sentence sentences
     (8) sentences -> . empty
@@ -258,18 +239,14 @@ state 11
     (5) sentence -> . boolsent
     (9) empty -> .
     (14) atomsent -> . OPEN predicate termseq CLOSE
-    (15) atomsent -> . empty
-    (16) boolsent -> . OPEN AND sentences CLOSE
-    (17) boolsent -> . OPEN OR sentences CLOSE
-    (18) boolsent -> . OPEN IF sentence sentence CLOSE
-    (19) boolsent -> . OPEN IFF sentence sentence CLOSE
-    (20) boolsent -> . OPEN NOT sentence CLOSE
+    (15) boolsent -> . OPEN AND sentences CLOSE
+    (16) boolsent -> . OPEN OR sentences CLOSE
+    (17) boolsent -> . OPEN IF sentence sentence CLOSE
+    (18) boolsent -> . OPEN IFF sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
 
-  ! shift/reduce conflict for OPEN resolved as shift
     CLOSE           reduce using rule 9 (empty -> .)
     OPEN            shift and go to state 7
-
-  ! OPEN            [ reduce using rule 9 (empty -> .) ]
 
     sentences                      shift and go to state 22
     sentence                       shift and go to state 3
@@ -279,75 +256,57 @@ state 11
 
 state 12
 
-    (18) boolsent -> OPEN IF . sentence sentence CLOSE
+    (17) boolsent -> OPEN IF . sentence sentence CLOSE
     (4) sentence -> . atomsent
     (5) sentence -> . boolsent
     (14) atomsent -> . OPEN predicate termseq CLOSE
-    (15) atomsent -> . empty
-    (16) boolsent -> . OPEN AND sentences CLOSE
-    (17) boolsent -> . OPEN OR sentences CLOSE
-    (18) boolsent -> . OPEN IF sentence sentence CLOSE
-    (19) boolsent -> . OPEN IFF sentence sentence CLOSE
-    (20) boolsent -> . OPEN NOT sentence CLOSE
-    (9) empty -> .
+    (15) boolsent -> . OPEN AND sentences CLOSE
+    (16) boolsent -> . OPEN OR sentences CLOSE
+    (17) boolsent -> . OPEN IF sentence sentence CLOSE
+    (18) boolsent -> . OPEN IFF sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
 
-  ! shift/reduce conflict for OPEN resolved as shift
     OPEN            shift and go to state 7
-    CLOSE           reduce using rule 9 (empty -> .)
-
-  ! OPEN            [ reduce using rule 9 (empty -> .) ]
 
     sentence                       shift and go to state 23
     atomsent                       shift and go to state 5
     boolsent                       shift and go to state 6
-    empty                          shift and go to state 24
 
 state 13
 
-    (19) boolsent -> OPEN IFF . sentence sentence CLOSE
+    (18) boolsent -> OPEN IFF . sentence sentence CLOSE
     (4) sentence -> . atomsent
     (5) sentence -> . boolsent
     (14) atomsent -> . OPEN predicate termseq CLOSE
-    (15) atomsent -> . empty
-    (16) boolsent -> . OPEN AND sentences CLOSE
-    (17) boolsent -> . OPEN OR sentences CLOSE
-    (18) boolsent -> . OPEN IF sentence sentence CLOSE
-    (19) boolsent -> . OPEN IFF sentence sentence CLOSE
-    (20) boolsent -> . OPEN NOT sentence CLOSE
-    (9) empty -> .
+    (15) boolsent -> . OPEN AND sentences CLOSE
+    (16) boolsent -> . OPEN OR sentences CLOSE
+    (17) boolsent -> . OPEN IF sentence sentence CLOSE
+    (18) boolsent -> . OPEN IFF sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
 
-  ! shift/reduce conflict for OPEN resolved as shift
     OPEN            shift and go to state 7
-    CLOSE           reduce using rule 9 (empty -> .)
 
-  ! OPEN            [ reduce using rule 9 (empty -> .) ]
+    sentence                       shift and go to state 24
+    atomsent                       shift and go to state 5
+    boolsent                       shift and go to state 6
+
+state 14
+
+    (19) boolsent -> OPEN NOT . sentence CLOSE
+    (4) sentence -> . atomsent
+    (5) sentence -> . boolsent
+    (14) atomsent -> . OPEN predicate termseq CLOSE
+    (15) boolsent -> . OPEN AND sentences CLOSE
+    (16) boolsent -> . OPEN OR sentences CLOSE
+    (17) boolsent -> . OPEN IF sentence sentence CLOSE
+    (18) boolsent -> . OPEN IFF sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
+
+    OPEN            shift and go to state 7
 
     sentence                       shift and go to state 25
     atomsent                       shift and go to state 5
     boolsent                       shift and go to state 6
-    empty                          shift and go to state 24
-
-state 14
-
-    (20) boolsent -> OPEN NOT . sentence CLOSE
-    (4) sentence -> . atomsent
-    (5) sentence -> . boolsent
-    (14) atomsent -> . OPEN predicate termseq CLOSE
-    (15) atomsent -> . empty
-    (16) boolsent -> . OPEN AND sentences CLOSE
-    (17) boolsent -> . OPEN OR sentences CLOSE
-    (18) boolsent -> . OPEN IF sentence sentence CLOSE
-    (19) boolsent -> . OPEN IFF sentence sentence CLOSE
-    (20) boolsent -> . OPEN NOT sentence CLOSE
-    (9) empty -> .
-
-    OPEN            shift and go to state 7
-    CLOSE           reduce using rule 9 (empty -> .)
-
-    sentence                       shift and go to state 26
-    atomsent                       shift and go to state 5
-    boolsent                       shift and go to state 6
-    empty                          shift and go to state 24
 
 state 15
 
@@ -380,7 +339,7 @@ state 18
 
     (14) atomsent -> OPEN predicate termseq . CLOSE
 
-    CLOSE           shift and go to state 27
+    CLOSE           shift and go to state 26
 
 
 state 19
@@ -402,7 +361,7 @@ state 19
   ! CLOSE           [ reduce using rule 11 (termseq -> interpretedname .) ]
 
     interpretedname                shift and go to state 19
-    termseq                        shift and go to state 28
+    termseq                        shift and go to state 27
     empty                          shift and go to state 20
 
 state 20
@@ -414,78 +373,62 @@ state 20
 
 state 21
 
-    (16) boolsent -> OPEN AND sentences . CLOSE
+    (15) boolsent -> OPEN AND sentences . CLOSE
 
-    CLOSE           shift and go to state 29
+    CLOSE           shift and go to state 28
 
 
 state 22
 
-    (17) boolsent -> OPEN OR sentences . CLOSE
+    (16) boolsent -> OPEN OR sentences . CLOSE
 
-    CLOSE           shift and go to state 30
+    CLOSE           shift and go to state 29
 
 
 state 23
 
-    (18) boolsent -> OPEN IF sentence . sentence CLOSE
+    (17) boolsent -> OPEN IF sentence . sentence CLOSE
     (4) sentence -> . atomsent
     (5) sentence -> . boolsent
     (14) atomsent -> . OPEN predicate termseq CLOSE
-    (15) atomsent -> . empty
-    (16) boolsent -> . OPEN AND sentences CLOSE
-    (17) boolsent -> . OPEN OR sentences CLOSE
-    (18) boolsent -> . OPEN IF sentence sentence CLOSE
-    (19) boolsent -> . OPEN IFF sentence sentence CLOSE
-    (20) boolsent -> . OPEN NOT sentence CLOSE
-    (9) empty -> .
+    (15) boolsent -> . OPEN AND sentences CLOSE
+    (16) boolsent -> . OPEN OR sentences CLOSE
+    (17) boolsent -> . OPEN IF sentence sentence CLOSE
+    (18) boolsent -> . OPEN IFF sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
 
     OPEN            shift and go to state 7
-    CLOSE           reduce using rule 9 (empty -> .)
+
+    sentence                       shift and go to state 30
+    atomsent                       shift and go to state 5
+    boolsent                       shift and go to state 6
+
+state 24
+
+    (18) boolsent -> OPEN IFF sentence . sentence CLOSE
+    (4) sentence -> . atomsent
+    (5) sentence -> . boolsent
+    (14) atomsent -> . OPEN predicate termseq CLOSE
+    (15) boolsent -> . OPEN AND sentences CLOSE
+    (16) boolsent -> . OPEN OR sentences CLOSE
+    (17) boolsent -> . OPEN IF sentence sentence CLOSE
+    (18) boolsent -> . OPEN IFF sentence sentence CLOSE
+    (19) boolsent -> . OPEN NOT sentence CLOSE
+
+    OPEN            shift and go to state 7
 
     sentence                       shift and go to state 31
     atomsent                       shift and go to state 5
     boolsent                       shift and go to state 6
-    empty                          shift and go to state 24
-
-state 24
-
-    (15) atomsent -> empty .
-
-    OPEN            reduce using rule 15 (atomsent -> empty .)
-    CLOSE           reduce using rule 15 (atomsent -> empty .)
-
 
 state 25
 
-    (19) boolsent -> OPEN IFF sentence . sentence CLOSE
-    (4) sentence -> . atomsent
-    (5) sentence -> . boolsent
-    (14) atomsent -> . OPEN predicate termseq CLOSE
-    (15) atomsent -> . empty
-    (16) boolsent -> . OPEN AND sentences CLOSE
-    (17) boolsent -> . OPEN OR sentences CLOSE
-    (18) boolsent -> . OPEN IF sentence sentence CLOSE
-    (19) boolsent -> . OPEN IFF sentence sentence CLOSE
-    (20) boolsent -> . OPEN NOT sentence CLOSE
-    (9) empty -> .
+    (19) boolsent -> OPEN NOT sentence . CLOSE
 
-    OPEN            shift and go to state 7
-    CLOSE           reduce using rule 9 (empty -> .)
+    CLOSE           shift and go to state 32
 
-    sentence                       shift and go to state 32
-    atomsent                       shift and go to state 5
-    boolsent                       shift and go to state 6
-    empty                          shift and go to state 24
 
 state 26
-
-    (20) boolsent -> OPEN NOT sentence . CLOSE
-
-    CLOSE           shift and go to state 33
-
-
-state 27
 
     (14) atomsent -> OPEN predicate termseq CLOSE .
 
@@ -494,84 +437,76 @@ state 27
     CLOSE           reduce using rule 14 (atomsent -> OPEN predicate termseq CLOSE .)
 
 
-state 28
+state 27
 
     (12) termseq -> interpretedname termseq .
 
     CLOSE           reduce using rule 12 (termseq -> interpretedname termseq .)
 
 
+state 28
+
+    (15) boolsent -> OPEN AND sentences CLOSE .
+
+    OPEN            reduce using rule 15 (boolsent -> OPEN AND sentences CLOSE .)
+    $end            reduce using rule 15 (boolsent -> OPEN AND sentences CLOSE .)
+    CLOSE           reduce using rule 15 (boolsent -> OPEN AND sentences CLOSE .)
+
+
 state 29
 
-    (16) boolsent -> OPEN AND sentences CLOSE .
+    (16) boolsent -> OPEN OR sentences CLOSE .
 
-    OPEN            reduce using rule 16 (boolsent -> OPEN AND sentences CLOSE .)
-    $end            reduce using rule 16 (boolsent -> OPEN AND sentences CLOSE .)
-    CLOSE           reduce using rule 16 (boolsent -> OPEN AND sentences CLOSE .)
+    OPEN            reduce using rule 16 (boolsent -> OPEN OR sentences CLOSE .)
+    $end            reduce using rule 16 (boolsent -> OPEN OR sentences CLOSE .)
+    CLOSE           reduce using rule 16 (boolsent -> OPEN OR sentences CLOSE .)
 
 
 state 30
 
-    (17) boolsent -> OPEN OR sentences CLOSE .
+    (17) boolsent -> OPEN IF sentence sentence . CLOSE
 
-    OPEN            reduce using rule 17 (boolsent -> OPEN OR sentences CLOSE .)
-    $end            reduce using rule 17 (boolsent -> OPEN OR sentences CLOSE .)
-    CLOSE           reduce using rule 17 (boolsent -> OPEN OR sentences CLOSE .)
+    CLOSE           shift and go to state 33
 
 
 state 31
 
-    (18) boolsent -> OPEN IF sentence sentence . CLOSE
+    (18) boolsent -> OPEN IFF sentence sentence . CLOSE
 
     CLOSE           shift and go to state 34
 
 
 state 32
 
-    (19) boolsent -> OPEN IFF sentence sentence . CLOSE
+    (19) boolsent -> OPEN NOT sentence CLOSE .
 
-    CLOSE           shift and go to state 35
+    OPEN            reduce using rule 19 (boolsent -> OPEN NOT sentence CLOSE .)
+    $end            reduce using rule 19 (boolsent -> OPEN NOT sentence CLOSE .)
+    CLOSE           reduce using rule 19 (boolsent -> OPEN NOT sentence CLOSE .)
 
 
 state 33
 
-    (20) boolsent -> OPEN NOT sentence CLOSE .
+    (17) boolsent -> OPEN IF sentence sentence CLOSE .
 
-    OPEN            reduce using rule 20 (boolsent -> OPEN NOT sentence CLOSE .)
-    $end            reduce using rule 20 (boolsent -> OPEN NOT sentence CLOSE .)
-    CLOSE           reduce using rule 20 (boolsent -> OPEN NOT sentence CLOSE .)
+    OPEN            reduce using rule 17 (boolsent -> OPEN IF sentence sentence CLOSE .)
+    $end            reduce using rule 17 (boolsent -> OPEN IF sentence sentence CLOSE .)
+    CLOSE           reduce using rule 17 (boolsent -> OPEN IF sentence sentence CLOSE .)
 
 
 state 34
 
-    (18) boolsent -> OPEN IF sentence sentence CLOSE .
+    (18) boolsent -> OPEN IFF sentence sentence CLOSE .
 
-    OPEN            reduce using rule 18 (boolsent -> OPEN IF sentence sentence CLOSE .)
-    $end            reduce using rule 18 (boolsent -> OPEN IF sentence sentence CLOSE .)
-    CLOSE           reduce using rule 18 (boolsent -> OPEN IF sentence sentence CLOSE .)
-
-
-state 35
-
-    (19) boolsent -> OPEN IFF sentence sentence CLOSE .
-
-    OPEN            reduce using rule 19 (boolsent -> OPEN IFF sentence sentence CLOSE .)
-    $end            reduce using rule 19 (boolsent -> OPEN IFF sentence sentence CLOSE .)
-    CLOSE           reduce using rule 19 (boolsent -> OPEN IFF sentence sentence CLOSE .)
+    OPEN            reduce using rule 18 (boolsent -> OPEN IFF sentence sentence CLOSE .)
+    $end            reduce using rule 18 (boolsent -> OPEN IFF sentence sentence CLOSE .)
+    CLOSE           reduce using rule 18 (boolsent -> OPEN IFF sentence sentence CLOSE .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for OPEN in state 0 resolved as shift
-WARNING: shift/reduce conflict for OPEN in state 3 resolved as shift
-WARNING: shift/reduce conflict for OPEN in state 10 resolved as shift
-WARNING: shift/reduce conflict for OPEN in state 11 resolved as shift
-WARNING: shift/reduce conflict for OPEN in state 12 resolved as shift
-WARNING: shift/reduce conflict for OPEN in state 13 resolved as shift
 WARNING: reduce/reduce conflict in state 3 resolved using rule (sentences -> sentence)
 WARNING: rejected rule (empty -> <empty>) in state 3
-WARNING: reduce/reduce conflict in state 4 resolved using rule (sentences -> empty)
-WARNING: rejected rule (atomsent -> empty) in state 4
 WARNING: reduce/reduce conflict in state 19 resolved using rule (empty -> <empty>)
 WARNING: rejected rule (termseq -> interpretedname) in state 19
 WARNING: Rule (termseq -> interpretedname) is never reduced
