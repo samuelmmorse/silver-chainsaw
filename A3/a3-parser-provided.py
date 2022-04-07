@@ -94,11 +94,17 @@ class ClifParser(object):
 
 	def p_starter(self, p):
 		"""
-		interpretedname : NUMERAL 
-				| QUOTEDSTRING
+		starter : sentence 
+				| sentence starter
 		"""
 		print("Starting the parsing process.")
 		pass
+	
+	def p_interpretedname(self, p):
+		"""
+		interpretedname : NUMERAL 
+				| QUOTEDSTRING
+		"""
 
 	def p_sentence(self, p):
 		"""
@@ -128,10 +134,16 @@ class ClifParser(object):
 				| interpretedname termseq
 		'''
 
-
 	def p_atomsent(self, p):
 		"""
 		atomsent : OPEN predicate termseq CLOSE
+		"""
+
+	def p_boolsent(self, p):
+		"""
+		boolsent : OPEN andOr starter CLOSE 
+				| OPEN ifIff sentence sentence CLOSE 
+				| OPEN NOT sentence CLOSE 
 		"""
 
 	def p_andOr(self, p):
@@ -145,20 +157,7 @@ class ClifParser(object):
 		ifIff : IF
 				| IFF
 		"""
-
-	def p_oneOrMoreSentences(self, p):
-		"""
-		oneOrMoreSentences : sentence
-				| sentence oneOrMoreSentences
-		"""
-
-	def p_boolsent(self, p):
-		"""
-		boolsent : OPEN andOr oneOrMoreSentences CLOSE 
-				| OPEN ifIff sentence sentence CLOSE 
-				| OPEN NOT sentence CLOSE 
-		"""
-
+	
 	def p_error(self, p):
 
 		if p is None:
