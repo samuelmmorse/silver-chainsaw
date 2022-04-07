@@ -105,3 +105,4 @@ s = "('FuncA' 'a' 100 25) \
 (iff (and ('B_100' 'B_101' '$100')) ('[TODAY]' '[4,5,6]' '[3+4]')) "
 print('\nLexing '+s)
 lex.lex(s)
+

@@ -1,7 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
 
-class ClifLexer(object):
+class ClifLexer():
 
 	# CONSTRUCTOR
 	def __init__(self):
@@ -16,14 +16,22 @@ class ClifLexer(object):
 
 	reserved_bool = {
 		'and': 'AND',
-		'or': 'OR'
+		'or': 'OR',
+		'not': 'NOT'
 	}
 
-	tokens = ['OPEN', 'CLOSE', 'QUOTEDSTRING', 'RESERVEDELEMENT']
+	reserved_element = {
+		'iff': 'IFF',
+		'if': 'IF',
+		'cl:comment' : 'CL_COMMENT',
+	}
+
+	tokens = ['OPEN', 'CLOSE', 'QUOTEDSTRING', 'RESERVEDELEMENT', 'NUMERAL']
 
 	tokens += reserved_bool.values()
+	tokens += reserved_element.values()
 
-	t_ignore = '\t\r\n\f\v'
+	t_ignore = ' \t\r\n\f\v'
 
 	def t_NEWLINE(self,t):
 		r'\n+'
@@ -42,18 +50,23 @@ class ClifLexer(object):
 		# here we use a regular expression to say what matches this particular token:
 		# any sequence of standard characters of length 1 or greater
 		# but this does not yet cover all reservedelements
-		r'\w+'
+		r'[A-Za-z]+ ([A-Za-z]|:)*'
 		if t.value in self.reserved_bool:
 			t.type = self.reserved_bool[t.value]
 			#print("Boolean reserved word: " + t.value)
+			return t
+		elif t.value in self.reserved_element:
+			t.type = self.reserved_element[t.value]
 			return t
 		else:
 			pass
 
 	def t_QUOTEDSTRING(self, t):
-		# This is not yet correct: you need to complete the lexing of quotedstring
-		# This only matches a single quotation character
-		r'\''
+		r'\'(\w*|\?*|\$*|/*|"*|=*|;*|\+*|:*|%*|\[*|\]*|,*)*\''
+		return t
+	
+	def t_NUMERAL(self, t):
+		r'\d+'
 		return t
 
 	def lex(self, input_string):
@@ -75,18 +88,22 @@ class ClifParser(object):
 		self.lexer = ClifLexer()
 		self.parser = yacc.yacc(module=self)
 
+	# DESTRUCTOR
+	def __del__(self):
+		pass
 
 	def p_starter(self, p):
 		"""
-		starter : sentence
-				| sentence starter
+		interpretedname : NUMERAL 
+				| QUOTEDSTRING
 		"""
 		print("Starting the parsing process.")
 		pass
 
 	def p_sentence(self, p):
 		"""
-		sentence : OPEN AND QUOTEDSTRING QUOTEDSTRING CLOSE
+		sentence : atomsent
+				| boolsent
 		"""
 		# note that the rule above is INCORRECT: it is just an example of how to specify a rule
 		print("Found a sentence: {} {} {} ".format(p[2], p[3], p[4]))
@@ -96,6 +113,51 @@ class ClifParser(object):
 			no_quotedstrings = 2
 
 		print("Number of distinct quoted strings: " + str(no_quotedstrings))
+
+	def p_predicate(self, p):
+		"""
+		predicate : interpretedname
+		"""
+
+	def p_termseq(self, p):
+		# """
+		# termseq : { interpretedname }
+		# """
+		'''
+		termseq : interpretedname
+				| interpretedname termseq
+		'''
+
+
+	def p_atomsent(self, p):
+		"""
+		atomsent : OPEN predicate termseq CLOSE
+		"""
+
+	def p_andOr(self, p):
+		"""
+		andOr : AND 
+				| OR
+		"""
+
+	def p_ifIff(self, p):
+		"""
+		ifIff : IF
+				| IFF
+		"""
+
+	def p_oneOrMoreSentences(self, p):
+		"""
+		oneOrMoreSentences : sentence
+				| sentence oneOrMoreSentences
+		"""
+
+	def p_boolsent(self, p):
+		"""
+		boolsent : OPEN andOr oneOrMoreSentences CLOSE 
+				| OPEN ifIff sentence sentence CLOSE 
+				| OPEN NOT sentence CLOSE 
+		"""
 
 	def p_error(self, p):
 
@@ -113,7 +175,7 @@ class ClifParser(object):
 
 	def parse(self, input_string):
 		# initialize the parser
-		#parser = yacc.yacc(module=self)
+		parser = yacc.yacc(module=self)
 
 		self.parser.parse(input_string)
 
