@@ -64,7 +64,7 @@ class ClifLexer():
 			pass
 
 	def t_QUOTEDSTRING(self, t):
-		r'\'(\w*|\?*|\$*|/*|"*|=*|;*|\+*|:*|%*|\[*|\]*|,*)*\''
+		r'\'(\w* | \?* | \$* | /* | "* | =* | ;* | \+* | :* | %*| \[* | \]* | ,* | \'* | \|* | \\*)*\''
 		return t
 	
 	def t_NUMERAL(self, t):
@@ -92,6 +92,7 @@ class ClifParser(object):
 		self.count = 0
 		self.atomic = False
 		self.boolean = False
+		self.comment = False
 		self.input_string = ''
 
 	# DESTRUCTOR
@@ -115,6 +116,7 @@ class ClifParser(object):
 	def p_sentence(self, p):
 		"""
 		sentence : atomsent
+				| commentsent
 				| boolsent
 		"""
 		#print("sentence")
@@ -164,6 +166,7 @@ class ClifParser(object):
 		"""
 		self.boolean = False
 		self.atomic = True
+		self.comment = False
 		#print("atomsent")
 
 	def p_boolsent(self, p):
@@ -176,8 +179,16 @@ class ClifParser(object):
 		"""
 		self.atomic = False
 		self.boolean = True
+		self.comment = False
 		#print("boolsent")
 
+	def p_commentsent(self, p):
+		"""
+		commentsent : OPEN CL_COMMENT QUOTEDSTRING sentence CLOSE
+		"""
+		self.comment = True
+		self.atomic = False
+		self.boolean = False
 
 	def p_error(self, p):
 
@@ -192,11 +203,6 @@ class ClifParser(object):
 
 		print("Parsing error; current stack: " + str(stack))
 
-	# def p_commentsent(self, p):
-	# 	"""
-	# 	commentsent : OPEN CL_COMMENT sentences CLOSE
-	# 	"""
-
 	def parse(self, input_string):
 		# initialize the parser
 		parser = yacc.yacc(module=self)
@@ -208,6 +214,8 @@ class ClifParser(object):
 			print("Atomic:", self.input_string, end="")
 		elif self.boolean:
 			print("Boolean:", self.input_string, end="")
+		elif self.comment:
+			print("Comment:", self.input_string, end="")
 
 
 def __main__():
