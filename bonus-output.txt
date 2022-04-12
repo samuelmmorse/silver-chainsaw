@@ -1,0 +1,95 @@
+/////////////////////////////////////////////
+BONUS
+/////////////////////////////////////////////
+
+
+PS C:\Users\samue\Documents\GitHub\silver-chainsaw> python .\LexerParser.py .\testfiles\a3-valid-bonus-v4.txt True
+Number of sentences: 5
+Sentence: (and ('TEST' 100 '"something"\"here\"'))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(AND,'and',1,1)
+LexToken(OPEN,'(',1,5)
+LexToken(QUOTEDSTRING,"'TEST'",1,6)
+LexToken(NUMERAL,'100',1,13)
+LexToken(QUOTEDSTRING,'\'"something"\\"here\\"\'',1,17)
+LexToken(CLOSE,')',1,38)
+LexToken(CLOSE,')',1,39)
+...Parsing...
+Boolean: (and ('TEST' 100 '"something"\"here\"')): ops = 1, names = 2
+
+Sentence: (iff (and (3) ('+') (5)) (cl:comment 'Here_comes_the_comment:_"3+5"' ('True')))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(IFF,'iff',1,1)
+LexToken(OPEN,'(',1,5)
+LexToken(AND,'and',1,6)
+LexToken(OPEN,'(',1,10)
+LexToken(NUMERAL,'3',1,11)
+LexToken(CLOSE,')',1,12)
+LexToken(OPEN,'(',1,14)
+LexToken(QUOTEDSTRING,"'+'",1,15)
+LexToken(CLOSE,')',1,18)
+LexToken(OPEN,'(',1,20)
+LexToken(NUMERAL,'5',1,21)
+LexToken(CLOSE,')',1,22)
+LexToken(CLOSE,')',1,23)
+LexToken(OPEN,'(',1,25)
+LexToken(CL_COMMENT,'cl:comment',1,26)
+LexToken(QUOTEDSTRING,'\'Here_comes_the_comment:_"3+5"\'',1,37)
+LexToken(OPEN,'(',1,69)
+LexToken(QUOTEDSTRING,"'True'",1,70)
+LexToken(CLOSE,')',1,76)
+LexToken(CLOSE,')',1,77)
+LexToken(CLOSE,')',1,78)
+...Parsing...
+Boolean: (iff (and (3) ('+') (5)) (cl:comment 'Here_comes_the_comment:_"3+5"' ('True'))): ops = 2, names = 2
+
+Sentence: (cl:comment 'My comment is \'THIS\'' (and ('TODAY')))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(CL_COMMENT,'cl:comment',1,1)
+LexToken(QUOTEDSTRING,"'My comment is \\'THIS\\''",1,12)
+LexToken(OPEN,'(',1,37)
+LexToken(AND,'and',1,38)
+LexToken(OPEN,'(',1,42)
+LexToken(QUOTEDSTRING,"'TODAY'",1,43)
+LexToken(CLOSE,')',1,50)
+LexToken(CLOSE,')',1,51)
+LexToken(CLOSE,')',1,52)
+...Parsing...
+Comment: (cl:comment 'My comment is \'THIS\'' (and ('TODAY'))): ops = 1, names = 1
+
+Sentence: (and (100 'something' '\'somethingelse'))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(AND,'and',1,1)
+LexToken(OPEN,'(',1,5)
+LexToken(NUMERAL,'100',1,6)
+LexToken(QUOTEDSTRING,"'something'",1,10)
+LexToken(QUOTEDSTRING,"'\\'somethingelse'",1,22)
+LexToken(CLOSE,')',1,39)
+LexToken(CLOSE,')',1,40)
+...Parsing...
+Boolean: (and (100 'something' '\'somethingelse')): ops = 1, names = 2
+
+Sentence: (cl:comment 'Some_comment:..."' (if ('True') (not (0))))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(CL_COMMENT,'cl:comment',1,1)
+LexToken(QUOTEDSTRING,'\'Some_comment:..."\'',1,12)
+LexToken(OPEN,'(',1,32)
+LexToken(IF,'if',1,33)
+LexToken(OPEN,'(',1,36)
+LexToken(QUOTEDSTRING,"'True'",1,37)
+LexToken(CLOSE,')',1,43)
+LexToken(OPEN,'(',1,45)
+LexToken(NOT,'not',1,46)
+LexToken(OPEN,'(',1,50)
+LexToken(NUMERAL,'0',1,51)
+LexToken(CLOSE,')',1,52)
+LexToken(CLOSE,')',1,53)
+LexToken(CLOSE,')',1,54)
+LexToken(CLOSE,')',1,55)
+...Parsing...
+Comment: (cl:comment 'Some_comment:..."' (if ('True') (not (0)))): ops = 2, names = 1

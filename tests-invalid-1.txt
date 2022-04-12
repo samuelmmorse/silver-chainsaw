@@ -1,0 +1,4 @@
+(and ('xavier') ('logan') ('rogue'))
+(iff ('gorgon') ('cthulu') (and 'p' 'c'))
+(rapscallion scotchbrite nero)
+(432234 423234 234234 \00)

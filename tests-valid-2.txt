@@ -1,0 +1,4 @@
+(not ( and (if (iff ('there') ('is')) ('no')) ('spoon')))
+('---------\'"')
+(and ('""""""""' '\'"\'"') (if ('quotes')('revoke')))
+(and ('charles') (if ('=') (and ('mutant') ('true'))))

@@ -1,0 +1,3 @@
+(and (cl:comment "this \'is\' a comment"))
+(cl:comment 'aaa' (not (100 'and'))
+('\this' 'is an error' 'meep moop' 'but where is the error?')
