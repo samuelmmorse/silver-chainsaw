@@ -1,3 +1,4 @@
+from ast import Num
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
@@ -64,7 +65,7 @@ class ClifLexer():
 			pass
 
 	def t_QUOTEDSTRING(self, t):
-		r'\'(\w*|\?*|\$*|/*|"*|=*|;*|\+*|:*|%*|\[*|\]*|,*)*\''
+		r'\'([A-Za-z0-9 ]* | \?* | \$* | /* | "* | =* | ;* | \+* | :* | %*| \[* | \]* | ,* | \|* | (\\\')* | (\\")* | \.* | \_*)*\''
 		return t
 	
 	def t_NUMERAL(self, t):
@@ -92,7 +93,10 @@ class ClifParser(object):
 		self.count = 0
 		self.atomic = False
 		self.boolean = False
+		self.comment = False
 		self.input_string = ''
+		self.numOps = 0
+		self.numNames = 0
 
 	# DESTRUCTOR
 	def __del__(self):
@@ -108,13 +112,20 @@ class ClifParser(object):
 	def p_interpretedname(self, p):
 		"""
 		interpretedname : NUMERAL 
-				| QUOTEDSTRING
+				| quotedstringrule
 		"""
 		#print("interpretedname")
+
+	def p_quotedstringrule(self, p):
+		"""
+		quotedstringrule : QUOTEDSTRING
+		"""
+		self.numNames += 1
 
 	def p_sentence(self, p):
 		"""
 		sentence : atomsent
+				| commentsent
 				| boolsent
 		"""
 		#print("sentence")
@@ -164,6 +175,7 @@ class ClifParser(object):
 		"""
 		self.boolean = False
 		self.atomic = True
+		self.comment = False
 		#print("atomsent")
 
 	def p_boolsent(self, p):
@@ -176,8 +188,17 @@ class ClifParser(object):
 		"""
 		self.atomic = False
 		self.boolean = True
+		self.comment = False
+		self.numOps += 1
 		#print("boolsent")
 
+	def p_commentsent(self, p):
+		"""
+		commentsent : OPEN CL_COMMENT QUOTEDSTRING sentence CLOSE
+		"""
+		self.comment = True
+		self.atomic = False
+		self.boolean = False
 
 	def p_error(self, p):
 
@@ -192,11 +213,6 @@ class ClifParser(object):
 
 		print("Parsing error; current stack: " + str(stack))
 
-	# def p_commentsent(self, p):
-	# 	"""
-	# 	commentsent : OPEN CL_COMMENT sentences CLOSE
-	# 	"""
-
 	def parse(self, input_string):
 		# initialize the parser
 		parser = yacc.yacc(module=self)
@@ -204,10 +220,13 @@ class ClifParser(object):
 		self.parser.parse(input_string)
 	
 	def parsePrint(self):
+		nums = ": ops = " + str(self.numOps) + ", names = " + str(self.numNames)
 		if self.atomic:
-			print("Atomic:", self.input_string, end="")
+			print("Atomic: " + self.input_string.strip('\n') + nums)
 		elif self.boolean:
-			print("Boolean:", self.input_string, end="")
+			print("Boolean: " + self.input_string.strip('\n') + nums)
+		elif self.comment:
+			print("Comment: " + self.input_string.strip('\n') + nums)
 
 
 def __main__():

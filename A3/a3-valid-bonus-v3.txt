@@ -1,0 +1,5 @@
+(cl:comment 'My comment is \'THIS\'' (and ('TODAY')))
+(and ('"something"\"here\"'))
+(and ('something' '\'somethingelse' ))
+(iff (and (3) ('+') (5)) (cl:comment 'Here_comes_the_comment:_"3+5"' ('True')))
+(cl:comment 'Some_comment:..."' (if ('True') (not (0))))
