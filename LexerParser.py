@@ -244,14 +244,14 @@ class ClifParser(object):
 			print("There was a lexing error, not able to parse... meep moop ¯\_(ツ)_/¯")
 
 def str_to_bool(v):
-    if isinstance(v, bool):
-        return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
+	if isinstance(v, bool):
+		return v
+	if v.lower() in ('yes', 'true', 't', 'y', '1'):
+		return True
+	elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+		return False
+	else:
+		raise argparse.ArgumentTypeError('Boolean value expected.')
 
 
 def __main__():
@@ -278,12 +278,13 @@ def __main__():
 		sentence = sentence.strip("\n")
 		parser = ClifParser()
 		print("Sentence: " + sentence + "\n... Lexing...")
-		if lex_and_parse:
+		if not lex_and_parse:
 			parser.lexer.lex(sentence)
-		parser = ClifParser()
-		print("...Parsing...")
-		parser.parse(sentence)
-		parser.parsePrint()
-		print("")
+		else:
+			parser.lexer.lex(sentence)
+			print("...Parsing...")
+			parser.parse(sentence)
+			parser.parsePrint()
+			print("")
 
 __main__()

@@ -1,0 +1,142 @@
+/////////////////////////////////////////////
+CLIF1 invalid
+/////////////////////////////////////////////
+
+
+PS C:\Users\samue\Documents\GitHub\silver-chainsaw> python .\LexerParser.py .\testfiles\a3-invalid-clif1.txt True   
+Number of sentences: 4
+Sentence: ('FuncA' 'a' 100 25 'more;and;more' 'and')
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(QUOTEDSTRING,"'FuncA'",1,1)
+LexToken(QUOTEDSTRING,"'a'",1,9)
+LexToken(NUMERAL,'100',1,13)
+LexToken(NUMERAL,'25',1,17)
+LexToken(QUOTEDSTRING,"'more;and;more'",1,20)
+LexToken(QUOTEDSTRING,"'and'",1,36)
+LexToken(CLOSE,')',1,41)
+...Parsing...
+Atomic: ('FuncA' 'a' 100 25 'more;and;more' 'and') : ops = 0, names = 4       
+
+Sentence: (and ('isTrue?' 'C'))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(AND,'and',1,1)
+LexToken(OPEN,'(',1,5)
+LexToken(QUOTEDSTRING,"'isTrue?'",1,6)
+LexToken(QUOTEDSTRING,"'C'",1,16)
+LexToken(CLOSE,')',1,19)
+LexToken(CLOSE,')',1,20)
+...Parsing...
+Boolean: (and ('isTrue?' 'C')): ops = 1, names = 2
+
+Sentence: (if ('CORRECT' 100 '=50+50') (and (and ('CORRECT' 'everything' 0))))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(IF,'if',1,1)
+LexToken(OPEN,'(',1,4)
+LexToken(QUOTEDSTRING,"'CORRECT'",1,5)
+LexToken(NUMERAL,'100',1,15)
+LexToken(QUOTEDSTRING,"'=50+50'",1,19)
+LexToken(CLOSE,')',1,27)
+LexToken(OPEN,'(',1,29)
+LexToken(AND,'and',1,30)
+LexToken(OPEN,'(',1,34)
+LexToken(AND,'and',1,35)
+LexToken(OPEN,'(',1,39)
+LexToken(QUOTEDSTRING,"'CORRECT'",1,40)
+LexToken(QUOTEDSTRING,"'everything'",1,50)
+LexToken(NUMERAL,'0',1,63)
+LexToken(CLOSE,')',1,64)
+LexToken(CLOSE,')',1,65)
+LexToken(CLOSE,')',1,66)
+LexToken(CLOSE,')',1,67)
+...Parsing...
+Boolean: (if ('CORRECT' 100 '=50+50') (and (and ('CORRECT' 'everything' 0)))): ops = 3, names = 4
+
+Sentence: (iff (and 'B_100' 'B_101') ('{order1}' '[1234]') ('MORE' '1001&Stuff'))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(IFF,'iff',1,1)
+LexToken(OPEN,'(',1,5)
+LexToken(AND,'and',1,6)
+LexToken(QUOTEDSTRING,"'B_100'",1,10)
+LexToken(QUOTEDSTRING,"'B_101'",1,18)
+LexToken(CLOSE,')',1,25)
+LexToken(OPEN,'(',1,27)
+LexToken(QUOTEDSTRING,"'{order1}'",1,28)
+LexToken(QUOTEDSTRING,"'[1234]'",1,39)
+LexToken(CLOSE,')',1,47)
+LexToken(OPEN,'(',1,49)
+LexToken(QUOTEDSTRING,"'MORE'",1,50)
+LexToken(QUOTEDSTRING,"'1001&Stuff'",1,57)
+LexToken(CLOSE,')',1,69)
+LexToken(CLOSE,')',1,70)
+...Parsing...
+Parsing error; current stack: [LexToken(OPEN,'(',1,0), LexToken(IFF,'iff',1,1), LexToken(OPEN,'(',1,5), LexToken(AND,'and',1,6)]
+Parsing error; current stack: [starter]
+There was a parsing error, not able to parse... meep moop ¯\_(ツ)_/¯
+
+/////////////////////////////////////////////
+CLIF2 invalid
+/////////////////////////////////////////////
+
+PS C:\Users\samue\Documents\GitHub\silver-chainsaw> python .\LexerParser.py .\testfiles\a3-invalid-clif2.txt True
+Number of sentences: 4
+Sentence: (not ('TODAY=03/26/22'))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(NOT,'not',1,1)
+LexToken(OPEN,'(',1,5)
+LexToken(QUOTEDSTRING,"'TODAY=03/26/22'",1,6)
+LexToken(CLOSE,')',1,22)
+LexToken(CLOSE,')',1,23)
+...Parsing...
+Boolean: (not ('TODAY=03/26/22')): ops = 1, names = 1
+
+Sentence: (and ('isTrue?' 'C'))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(AND,'and',1,1)
+LexToken(OPEN,'(',1,5)
+LexToken(QUOTEDSTRING,"'isTrue?'",1,6)
+LexToken(QUOTEDSTRING,"'C'",1,16)
+LexToken(CLOSE,')',1,19)
+LexToken(CLOSE,')',1,20)
+...Parsing...
+Boolean: (and ('isTrue?' 'C')): ops = 1, names = 2
+
+Sentence: (and (not 'True') ('FuncA' or 'Func B'))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(AND,'and',1,1)
+LexToken(OPEN,'(',1,5)
+LexToken(NOT,'not',1,6)
+LexToken(QUOTEDSTRING,"'True'",1,10)
+LexToken(CLOSE,')',1,16)
+LexToken(OPEN,'(',1,18)
+LexToken(QUOTEDSTRING,"'FuncA'",1,19)
+LexToken(OR,'or',1,27)
+LexToken(QUOTEDSTRING,"'Func B'",1,30)
+LexToken(CLOSE,')',1,38)
+LexToken(CLOSE,')',1,39)
+...Parsing...
+Parsing error; current stack: [LexToken(OPEN,'(',1,0), LexToken(AND,'and',1,1), LexToken(OPEN,'(',1,5), LexToken(NOT,'not',1,6)]
+There was a parsing error, not able to parse... meep moop ¯\_(ツ)_/¯
+
+Sentence: (cl:comment 'My comment is \'THIS\'' (and ('TODAY')))
+... Lexing...
+LexToken(OPEN,'(',1,0)
+LexToken(CL_COMMENT,'cl:comment',1,1)
+LexToken(QUOTEDSTRING,"'My comment is \\'THIS\\''",1,12)
+LexToken(OPEN,'(',1,37)
+LexToken(AND,'and',1,38)
+LexToken(OPEN,'(',1,42)
+LexToken(QUOTEDSTRING,"'TODAY'",1,43)
+LexToken(CLOSE,')',1,50)
+LexToken(CLOSE,')',1,51)
+LexToken(CLOSE,')',1,52)
+...Parsing...
+Comment: (cl:comment 'My comment is \'THIS\'' (and ('TODAY'))): ops = 1, names = 1
+
+

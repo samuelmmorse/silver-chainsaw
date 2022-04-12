@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND CLOSE CL_COMMENT IF IFF NOT NUMERAL OPEN OR QUOTEDSTRING RESERVEDELEMENT\n\t\tstarter : sentence\n\t\t\t\t| sentence starter\n\t\t\n\t\tsentence : OPEN AND QUOTEDSTRING QUOTEDSTRING CLOSE\n\t\t'
+_lr_signature = 'AND CLOSE CL_COMMENT IF IFF NOT NUMERAL OPEN OR QUOTEDSTRING RESERVEDELEMENT\n\t\tstarter : sentences\n\t\t\n\t\tinterpretedname : NUMERAL \n\t\t\t\t| quotedstringrule\n\t\t\n\t\tquotedstringrule : QUOTEDSTRING\n\t\t\n\t\tsentence : atomsent\n\t\t\t\t| commentsent\n\t\t\t\t| boolsent\n\t\t\n\t\tsentences : sentence \n\t\t\t\t| sentence sentences\n\t\t\t\t| empty\n\t\t\n\t\tempty : \n\t\t\n\t\tpredicate : interpretedname\n\t\t\n\t\ttermseq : interpretedname\n\t\t\t\t| interpretedname termseq\n\t\t\t\t| empty\n\t\t\n\t\tatomsent : OPEN predicate termseq CLOSE\n\t\t\n\t\tboolsent : OPEN AND sentences CLOSE\n\t\t\t\t| OPEN OR sentences CLOSE \n\t\t\t\t| OPEN IF sentence sentence CLOSE \n\t\t\t\t| OPEN IFF sentence sentence CLOSE \n\t\t\t\t| OPEN NOT sentence CLOSE \n\t\t\n\t\tcommentsent : OPEN CL_COMMENT QUOTEDSTRING sentence CLOSE\n\t\t'
     
-_lr_action_items = {'OPEN':([0,2,8,],[3,3,-3,]),'$end':([1,2,4,8,],[0,-1,-2,-3,]),'AND':([3,],[5,]),'QUOTEDSTRING':([5,6,],[6,7,]),'CLOSE':([7,],[8,]),}
+_lr_action_items = {'$end':([0,1,2,3,4,5,6,7,9,30,33,34,37,38,39,40,],[-11,0,-1,-8,-10,-5,-6,-7,-9,-16,-17,-18,-21,-22,-19,-20,]),'OPEN':([0,3,5,6,7,13,14,15,16,17,24,27,28,30,33,34,37,38,39,40,],[8,8,-5,-6,-7,8,8,8,8,8,8,8,8,-16,-17,-18,-21,-22,-19,-20,]),'CLOSE':([3,4,5,6,7,9,10,12,13,14,18,19,20,21,22,23,25,26,29,30,31,32,33,34,35,36,37,38,39,40,],[-8,-10,-5,-6,-7,-9,-11,-4,-11,-11,-12,-2,-3,30,-11,-15,33,34,37,-16,-14,38,-17,-18,39,40,-21,-22,-19,-20,]),'CL_COMMENT':([8,],[11,]),'AND':([8,],[13,]),'OR':([8,],[14,]),'IF':([8,],[15,]),'IFF':([8,],[16,]),'NOT':([8,],[17,]),'NUMERAL':([8,10,12,18,19,20,22,],[19,19,-4,-12,-2,-3,19,]),'QUOTEDSTRING':([8,10,11,12,18,19,20,22,],[12,12,24,-4,-12,-2,-3,12,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'starter':([0,2,],[1,4,]),'sentence':([0,2,],[2,2,]),}
+_lr_goto_items = {'starter':([0,],[1,]),'sentences':([0,3,13,14,],[2,9,25,26,]),'sentence':([0,3,13,14,15,16,17,24,27,28,],[3,3,3,3,27,28,29,32,35,36,]),'empty':([0,3,10,13,14,22,],[4,4,23,4,4,23,]),'atomsent':([0,3,13,14,15,16,17,24,27,28,],[5,5,5,5,5,5,5,5,5,5,]),'commentsent':([0,3,13,14,15,16,17,24,27,28,],[6,6,6,6,6,6,6,6,6,6,]),'boolsent':([0,3,13,14,15,16,17,24,27,28,],[7,7,7,7,7,7,7,7,7,7,]),'predicate':([8,],[10,]),'interpretedname':([8,10,22,],[18,22,22,]),'quotedstringrule':([8,10,22,],[20,20,20,]),'termseq':([10,22,],[21,31,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,7 +27,26 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> starter","S'",1,None,None,None),
-  ('starter -> sentence','starter',1,'p_starter','silver_chainsaw.py',95),
-  ('starter -> sentence starter','starter',2,'p_starter','silver_chainsaw.py',96),
-  ('sentence -> OPEN AND QUOTEDSTRING QUOTEDSTRING CLOSE','sentence',5,'p_sentence','silver_chainsaw.py',103),
+  ('starter -> sentences','starter',1,'p_starter','LexerParser.py',117),
+  ('interpretedname -> NUMERAL','interpretedname',1,'p_interpretedname','LexerParser.py',124),
+  ('interpretedname -> quotedstringrule','interpretedname',1,'p_interpretedname','LexerParser.py',125),
+  ('quotedstringrule -> QUOTEDSTRING','quotedstringrule',1,'p_quotedstringrule','LexerParser.py',131),
+  ('sentence -> atomsent','sentence',1,'p_sentence','LexerParser.py',137),
+  ('sentence -> commentsent','sentence',1,'p_sentence','LexerParser.py',138),
+  ('sentence -> boolsent','sentence',1,'p_sentence','LexerParser.py',139),
+  ('sentences -> sentence','sentences',1,'p_sentences','LexerParser.py',153),
+  ('sentences -> sentence sentences','sentences',2,'p_sentences','LexerParser.py',154),
+  ('sentences -> empty','sentences',1,'p_sentences','LexerParser.py',155),
+  ('empty -> <empty>','empty',0,'p_empty','LexerParser.py',161),
+  ('predicate -> interpretedname','predicate',1,'p_predicate','LexerParser.py',167),
+  ('termseq -> interpretedname','termseq',1,'p_termseq','LexerParser.py',173),
+  ('termseq -> interpretedname termseq','termseq',2,'p_termseq','LexerParser.py',174),
+  ('termseq -> empty','termseq',1,'p_termseq','LexerParser.py',175),
+  ('atomsent -> OPEN predicate termseq CLOSE','atomsent',4,'p_atomsent','LexerParser.py',184),
+  ('boolsent -> OPEN AND sentences CLOSE','boolsent',4,'p_boolsent','LexerParser.py',193),
+  ('boolsent -> OPEN OR sentences CLOSE','boolsent',4,'p_boolsent','LexerParser.py',194),
+  ('boolsent -> OPEN IF sentence sentence CLOSE','boolsent',5,'p_boolsent','LexerParser.py',195),
+  ('boolsent -> OPEN IFF sentence sentence CLOSE','boolsent',5,'p_boolsent','LexerParser.py',196),
+  ('boolsent -> OPEN NOT sentence CLOSE','boolsent',4,'p_boolsent','LexerParser.py',197),
+  ('commentsent -> OPEN CL_COMMENT QUOTEDSTRING sentence CLOSE','commentsent',5,'p_commentsent','LexerParser.py',207),
 ]
